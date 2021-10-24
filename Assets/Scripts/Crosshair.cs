@@ -33,7 +33,7 @@ public class Crosshair : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if ((other.gameObject.tag == "floor")||(other.gameObject.tag == "wall"))
+        if ((other.gameObject.tag == "floor")||(other.gameObject.tag == "wall") || (other.gameObject.tag == "slope"))
         {
             crosshairAnimator.SetBool("isReady", true);
             crosshairAnimator.SetBool("isDefault", false);
@@ -43,7 +43,7 @@ public class Crosshair : MonoBehaviour
 
     private void OnCollisionStay(Collision other)
     {
-        if((other.gameObject.tag == "floor") || (other.gameObject.tag == "wall"))
+        if((other.gameObject.tag == "floor") || (other.gameObject.tag == "wall") || (other.gameObject.tag == "slope"))
         {
             crosshairAnimator.SetBool("isReady", true);
             crosshairAnimator.SetBool("isDefault", false);

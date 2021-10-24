@@ -9,6 +9,8 @@ TagManager:
   - start
   - continue
   - options
+  - splat-track
+  - slope
   layers:
   - Default
   - TransparentFX

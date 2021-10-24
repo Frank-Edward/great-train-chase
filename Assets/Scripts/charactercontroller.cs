@@ -21,6 +21,9 @@ public class charactercontroller : MonoBehaviour
     public float maxCollisionVelocity = 200.0f;
     private bool jumpHeld = false;
     private bool landing = false;
+    private bool onSplatTrack = false;
+    private bool onSlope = false;
+    private bool touching = false; //trying this out
 
     void Start()
     {
@@ -38,6 +41,10 @@ public class charactercontroller : MonoBehaviour
         animator.SetBool("canLasso", true);
         animator.SetBool("isColliding", false);
         animator.SetBool("isSplat", false);
+        onSplatTrack = false;
+        onSlope = false;
+        //touching = false;
+
     }
 
     private void Reset()
@@ -57,6 +64,9 @@ public class charactercontroller : MonoBehaviour
         animator.SetBool("isColliding", false);
         animator.SetBool("isSplat", false);
         landing = false;
+        onSplatTrack = false;
+        onSlope = false;
+        touching = false;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -79,15 +89,27 @@ public class charactercontroller : MonoBehaviour
                 animator.SetBool("isFalling", false);
                 landing = true;
             }
+            
+           
         }
-        //can add landing logic here
-        //can add collide / splat logic here as well
+
         if (collision.gameObject.tag == "wall")
         {
+            //touching = true;
             if (((Mathf.Abs(collision.relativeVelocity.x) > maxCollisionVelocity)&&(animator.GetBool("isGrounded")==false)))
             {/*|| (Mathf.Abs(collision.relativeVelocity.y) > maxCollisionVelocity))*/
                 animator.SetBool("isColliding", true);
             }
+        }
+        if (collision.gameObject.tag == "splat-track")
+        {
+            Debug.Log("IN HERE");
+            animator.SetBool("isSplat", true);
+            onSplatTrack = true;
+        }
+        if (collision.gameObject.tag == "slope") {
+            onSlope = true;
+            Debug.Log("HERE");
         }
     }
     //private void OnCollisionStay(Collision collision)
@@ -97,8 +119,10 @@ public class charactercontroller : MonoBehaviour
     //        crosshairAnimator.SetBool("isReady", false);
     //        crosshairAnimator.SetBool("isGrabbed", false);
     //        animator.SetBool("canLasso", true);
-     //   }
-     //}
+    //   }
+    //}
+
+
     void OnCollisionExit(Collision collision)
     {
 
@@ -107,6 +131,21 @@ public class charactercontroller : MonoBehaviour
             animator.SetBool("isGrounded", false);
             animator.SetBool("isFalling", false);
         }
+        if (collision.gameObject.tag == "splat-track")
+        {
+            
+            onSplatTrack = false;
+        }
+        if (collision.gameObject.tag == "slope")
+        {
+            onSlope = false;
+        }
+
+        //if (collision.gameObject.tag == "wall")
+        //{
+
+        //    touching = false;
+        //}
     }
 
     void Update()
@@ -117,6 +156,9 @@ public class charactercontroller : MonoBehaviour
         // Gives a value between -1 and 1
         horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("splat")){
+            if (onSplatTrack) {
+                return;
+            }
             Reset();
         }
         if (animator.GetBool("isGrounded")) {
@@ -208,6 +250,15 @@ public class charactercontroller : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (onSplatTrack) {
+            body.velocity = new Vector3(-400, 1, 0);
+            return;
+        }
+        if (onSlope)
+        {//||touching
+            body.velocity += new Vector3(0, (Physics.gravity.y) * multiplierDown, 0);
+            return;
+        }
         if (animator.GetBool("isColliding")||animator.GetCurrentAnimatorStateInfo(0).IsName("splat")){
             body.velocity += new Vector3(0, (Physics.gravity.y) * multiplierDown, 0);
             return;
@@ -230,7 +281,7 @@ public class charactercontroller : MonoBehaviour
 
         }
         if (Mathf.Abs(body.velocity.x) > maxJumpVelocity){
-            horizontal = 0; //what is this double check?????????????
+            horizontal = 0; 
         }
 
 
