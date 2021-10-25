@@ -112,7 +112,17 @@ public class charactercontroller : MonoBehaviour
             Debug.Log("HERE");
         }
     }
-    //private void OnCollisionStay(Collision collision)
+    private void OnCollisionStay(Collision collision)
+    {
+        if ((collision.gameObject.tag == "floor")) {
+            animator.SetBool("isGrounded", true);
+       }
+       else
+        {
+            animator.SetBool("isGrounded", false);
+        }
+    }
+    ///private void OnCollisionStay(Collision collision)
     //{
     //    if ((collision.gameObject.tag == "floor") && animator.GetBool("isGrounded")) {
     //        crosshairAnimator.SetBool("isDefault", true);
@@ -160,6 +170,7 @@ public class charactercontroller : MonoBehaviour
                 return;
             }
             Reset();
+            return;
         }
         if (animator.GetBool("isGrounded")) {
 
@@ -187,13 +198,20 @@ public class charactercontroller : MonoBehaviour
 
         if ( Input.GetButtonDown("Vertical"))
         {
-            vertical = Input.GetAxisRaw("Vertical"); // -1 is down
-            if ((jumpHeld==false)&&(animator.GetBool("isGrounded"))){
-                jumpHeld = true;
-                animator.SetBool("isJumping", true);
-                animator.SetBool("isIdle", false);
-                animator.SetBool("isWalking", false);
+            vertical = 0;
+            if (Input.GetAxisRaw("Vertical") > 0)
+            {
+                if ((jumpHeld == false) && (animator.GetBool("isGrounded")))
+                {
+                    vertical = Input.GetAxisRaw("Vertical"); // -1 is down
+                    jumpHeld = true;
+                    animator.SetBool("isJumping", true);
+                    animator.SetBool("isIdle", false);
+                    animator.SetBool("isWalking", false);
+                }
+
             }
+            
         }
         if (Input.GetButtonUp("Vertical")) {
             jumpHeld = false;
@@ -243,13 +261,19 @@ public class charactercontroller : MonoBehaviour
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))
             {
                 landing = false;
-                
             }
         }
     }
 
     void FixedUpdate()
     {
+        //if ((body.velocity.y > 300)||(!onSplatTrack)) {
+        //    body.velocity = new Vector3(body.velocity.x, 300, 0);
+        //}
+        //if ((body.velocity.x > 300) || (!onSplatTrack))
+        //{
+        //    body.velocity = new Vector3(300, body.velocity.y, 0);
+        //}
         if (onSplatTrack) {
             body.velocity = new Vector3(-400, 1, 0);
             return;
@@ -274,7 +298,7 @@ public class charactercontroller : MonoBehaviour
                 //animator.SetBool("isJumpingRight", false);
             }
         }     
-        if ((body.velocity.y <= 0)&&(animator.GetBool("isGrounded")==false)) {
+        if ((body.velocity.y <= 0)&&(animator.GetBool("isGrounded")==false)) {//took out the equals
             animator.SetBool("isFalling", true);
             animator.SetBool("isJumping", false);
             vertical = 0;

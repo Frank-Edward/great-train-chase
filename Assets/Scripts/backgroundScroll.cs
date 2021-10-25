@@ -13,9 +13,9 @@ public class backgroundScroll : MonoBehaviour
 
     void Update()
     {
-        if (_transform.position.x < -1250) {
+        if (_transform.position.x < -500) {
             pos = _transform.position;
-            _transform.position = new Vector3(750, pos.y, pos.z);
+            _transform.position = new Vector3(2000, pos.y, pos.z);
         }
             
         _transform.Translate(-speed / 100, 0, 0);
