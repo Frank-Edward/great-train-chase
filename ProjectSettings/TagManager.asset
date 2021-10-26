@@ -11,6 +11,7 @@ TagManager:
   - options
   - splat-track
   - slope
+  - stand
   layers:
   - Default
   - TransparentFX

@@ -65,11 +65,15 @@
     <Compile Include="Assets\Scripts\Crosshair.cs" />
     <Compile Include="Assets\Scripts\Crosshair_modified.cs" />
     <Compile Include="Assets\Scripts\Lasso.cs" />
+    <Compile Include="Assets\Scripts\audioController.cs" />
     <Compile Include="Assets\Scripts\backgroundScroll.cs" />
     <Compile Include="Assets\Scripts\c_mod.cs" />
     <Compile Include="Assets\Scripts\cameraController.cs" />
     <Compile Include="Assets\Scripts\charactercontroller.cs" />
     <Compile Include="Assets\Scripts\loadScene.cs" />
+    <Compile Include="Assets\Scripts\titleAudioController.cs" />
+    <Compile Include="Assets\Scripts\titleScript.cs" />
+    <Compile Include="Assets\Title.cs" />
     <None Include="Assets\fonts\bronic.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.12f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

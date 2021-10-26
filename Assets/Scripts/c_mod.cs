@@ -49,7 +49,8 @@ public class c_mod : MonoBehaviour
         }
         if (pressed&&(other.gameObject.tag =="start"))
         {
-            SceneManager.LoadScene("Loading");
+            print("here");
+            SceneManager.LoadScene("Main");
         }
 
     }

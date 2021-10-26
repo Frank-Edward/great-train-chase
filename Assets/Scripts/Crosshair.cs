@@ -87,7 +87,7 @@ public class Crosshair : MonoBehaviour
         //worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
         if (!characterAnimator.GetBool("isCrosshairPressed"))
         {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 110);
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraDistance);
             crosshair.position = Camera.main.ScreenToWorldPoint(mousePosition);
             scale = Mathf.Sqrt((crosshair.position.x - body.position.x) * (crosshair.position.x - body.position.x) + (crosshair.position.y - body.position.y) * (crosshair.position.y - body.position.y));
             if (scale > maxDistance)

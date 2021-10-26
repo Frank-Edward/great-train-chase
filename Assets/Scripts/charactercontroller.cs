@@ -24,6 +24,7 @@ public class charactercontroller : MonoBehaviour
     private bool onSplatTrack = false;
     private bool onSlope = false;
     private bool touching = false; //trying this out
+    private bool walkHeld = false;
 
     void Start()
     {
@@ -44,10 +45,11 @@ public class charactercontroller : MonoBehaviour
         onSplatTrack = false;
         onSlope = false;
         //touching = false;
+        walkHeld = false;
 
-    }
+}
 
-    private void Reset()
+private void Reset()
     {
         animator.SetBool("isIdle", true);
         animator.SetBool("isGrounded", true);
@@ -67,9 +69,11 @@ public class charactercontroller : MonoBehaviour
         onSplatTrack = false;
         onSlope = false;
         touching = false;
-    }
+        walkHeld = false;
 
-    void OnCollisionEnter(Collision collision)
+}
+
+void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "floor")
         {
@@ -161,10 +165,10 @@ public class charactercontroller : MonoBehaviour
     void Update()
     {
         //if (animator.GetBool("isGrounded")&&(!animator.GetCurrentAnimatorStateInfo(0).IsName("idle"))) {
-            //animator.SetBool("canLasso", true);
+        //animator.SetBool("canLasso", true);
         //}
         // Gives a value between -1 and 1
-        horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
+        
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("splat")){
             if (onSplatTrack) {
                 return;
@@ -228,7 +232,19 @@ public class charactercontroller : MonoBehaviour
                 character.eulerAngles = new Vector3(0, 180, 0);
             }
         }
-        if ((horizontal != 0) && (animator.GetBool("isJumping")==false) && (animator.GetBool("isFalling") == false)&& (animator.GetBool("isGrounded") == true)&&((animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("walk")) ))//there is something wrong with the logic, check if a simpler way to set it
+        if (Input.GetButtonDown("Horizontal"))
+        {
+            walkHeld = true;
+        }
+        if (Input.GetButtonUp("Horizontal"))
+        {
+            walkHeld = false;
+            animator.SetBool("isWalking", false);
+            
+        }
+        horizontal = Input.GetAxisRaw("Horizontal"); // -1 is left
+
+        if ((horizontal != 0) && (animator.GetBool("isJumping")==false) && (animator.GetBool("isFalling") == false)&& (animator.GetBool("isGrounded") == true)&&(animator.GetCurrentAnimatorStateInfo(0).IsName("idle")|| animator.GetCurrentAnimatorStateInfo(0).IsName("walk")))//there is something wrong with the logic, check if a simpler way to set it
         {
             animator.SetBool("isWalking", true);//maybe bug is here
             animator.SetBool("isIdle", false);
@@ -242,7 +258,7 @@ public class charactercontroller : MonoBehaviour
             }
 
         }
-        else if ((horizontal == 0) && (animator.GetBool("isJumping") == false) && (animator.GetBool("isFalling") == false) && (animator.GetBool("isGrounded") == true) && ((animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("idle")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("walk")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("walk"))))//there is something wrong with the logic, check if a simpler way to set it
+        else if ((horizontal == 0) && (animator.GetBool("isJumping") == false) && (animator.GetBool("isFalling") == false) && (animator.GetBool("isGrounded") == true) && (animator.GetCurrentAnimatorStateInfo(0).IsName("idle") || animator.GetCurrentAnimatorStateInfo(0).IsName("walk")) )//there is something wrong with the logic, check if a simpler way to set it
         {
             animator.SetBool("isWalking", false);
             animator.SetBool("isIdle", true);
