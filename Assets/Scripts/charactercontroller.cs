@@ -25,6 +25,8 @@ public class charactercontroller : MonoBehaviour
     private bool onSlope = false;
     private bool touching = false; //trying this out
     private bool walkHeld = false;
+    public AudioSource sfx;
+    public AudioClip fx;
 
     void Start()
     {
@@ -42,10 +44,14 @@ public class charactercontroller : MonoBehaviour
         animator.SetBool("canLasso", true);
         animator.SetBool("isColliding", false);
         animator.SetBool("isSplat", false);
+        animator.SetBool("isWin", false);
+
         onSplatTrack = false;
         onSlope = false;
         //touching = false;
         walkHeld = false;
+        sfx.clip= fx;
+        sfx.loop = false;
 
 }
 
@@ -65,6 +71,8 @@ private void Reset()
         animator.SetBool("canLasso", true);
         animator.SetBool("isColliding", false);
         animator.SetBool("isSplat", false);
+        animator.SetBool("isWin", false);
+
         landing = false;
         onSplatTrack = false;
         onSlope = false;
@@ -75,9 +83,14 @@ private void Reset()
 
 void OnCollisionEnter(Collision collision)
     {
+        
+        if (collision.gameObject.tag == "win-block") {
+            animator.SetBool("isWin", true);
+        }
         if (collision.gameObject.tag == "floor")
         {
-            if (animator.GetBool("isColliding")) { 
+            if (animator.GetBool("isColliding")) {
+                
                 animator.SetBool("isSplat", true);
                 animator.SetBool("isColliding", false);
             }
@@ -92,6 +105,7 @@ void OnCollisionEnter(Collision collision)
                 animator.SetBool("isLanding", true);
                 animator.SetBool("isFalling", false);
                 landing = true;
+     
             }
             
            
@@ -100,6 +114,7 @@ void OnCollisionEnter(Collision collision)
         if (collision.gameObject.tag == "wall")
         {
             //touching = true;
+            sfx.Play();
             if (((Mathf.Abs(collision.relativeVelocity.x) > maxCollisionVelocity)&&(animator.GetBool("isGrounded")==false)))
             {/*|| (Mathf.Abs(collision.relativeVelocity.y) > maxCollisionVelocity))*/
                 animator.SetBool("isColliding", true);
@@ -107,13 +122,11 @@ void OnCollisionEnter(Collision collision)
         }
         if (collision.gameObject.tag == "splat-track")
         {
-            Debug.Log("IN HERE");
             animator.SetBool("isSplat", true);
             onSplatTrack = true;
         }
         if (collision.gameObject.tag == "slope") {
             onSlope = true;
-            Debug.Log("HERE");
         }
     }
     private void OnCollisionStay(Collision collision)
@@ -168,7 +181,11 @@ void OnCollisionEnter(Collision collision)
         //animator.SetBool("canLasso", true);
         //}
         // Gives a value between -1 and 1
-        
+        if (animator.GetBool("isWin")) {
+            Debug.Log("GANGANT");
+            return;
+
+        }
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("splat")){
             if (onSplatTrack) {
                 return;

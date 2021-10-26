@@ -50,7 +50,7 @@ public class c_mod : MonoBehaviour
         if (pressed&&(other.gameObject.tag =="start"))
         {
             print("here");
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("L_OMEGALUL_RE");
         }
 
     }

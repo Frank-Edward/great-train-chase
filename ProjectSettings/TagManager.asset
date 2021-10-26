@@ -12,6 +12,7 @@ TagManager:
   - splat-track
   - slope
   - stand
+  - win-block
   layers:
   - Default
   - TransparentFX
