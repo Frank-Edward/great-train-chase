@@ -8,6 +8,7 @@ public class Title : MonoBehaviour
     public AudioClip theme;
     public AudioSource player;
     private bool playing = false;
+    public GameObject startButton;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Title : MonoBehaviour
                 player.Play();
                 playing = true;
             }
+            startButton.SetActive(true);
         }
         
     }
